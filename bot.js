@@ -1,19 +1,9 @@
 const { Telegraf, Markup, session, Scenes } = require("telegraf");
 require("dotenv").config();
 const { Sequelize, DataTypes } = require("sequelize");
-const express = require("express");
+
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
-
-const app = express();
-
-// Dummy HTTP server for Render deployment
-app.get("/", (req, res) => {
-  res.send("Bot is running...");
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 
 
 // SQL Connection
