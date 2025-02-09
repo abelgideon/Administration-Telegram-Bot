@@ -15,8 +15,7 @@
     "dotenv": "^16.4.7",
     "mysql2": "^3.12.0",
     "sequelize": "^6.37.5",
-    "telegraf": "^4.16.3",
-    "telegram-webhook-js": "^1.0.51"
+    "telegraf": "^4.16.3"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"

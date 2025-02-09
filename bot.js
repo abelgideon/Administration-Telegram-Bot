@@ -6,24 +6,6 @@ const { Sequelize, DataTypes } = require("sequelize");
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
 
-// Cloudflare Webhook
-document.addEventListener('fetch', event => {
-  event.respondWith(handleRequest(event.request));
-});
-
-async function handleRequest(request) {
-  const url = new URL(request.url);
-  
-  if (url.pathname === '/webhook') {
-      const updates = await request.json();
-      await bot.handleUpdate(updates);
-      return new Response('OK', { status: 200 });
-  }
-
-  await bot.setWebhook(`https://${url.hostname}/webhook`);
-  return new Response('Webhook set', { status: 200 });
-}
-
 
 // SQL Connection
 const sequelize = new Sequelize(
