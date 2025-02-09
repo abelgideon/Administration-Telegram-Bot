@@ -59,16 +59,33 @@ const registerSteps = new Scenes.WizardScene(
   },
   (ctx) => {
     ctx.scene.state.name = ctx.message.text;
+
+    if (!/^[a-z ]+$/i.test(ctx.scene.state.name)) {
+      ctx.reply("Please enter a valid full name")
+      return;
+    }
+
     ctx.reply("Enter your email address:");
     return ctx.wizard.next();
   },
   (ctx) => {
     ctx.scene.state.email = ctx.message.text;
+
+    if (!/^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/.test(ctx.scene.state.email)) {
+      ctx.reply("Please enter a valid email address");
+      return;
+    }
+
     ctx.reply("Enter your phone number");
     return ctx.wizard.next();
   },
   (ctx) => {
     ctx.scene.state.phone = ctx.message.text;
+
+    if (!/^[0-9+]{10,13}$/.test(ctx.scene.state.phone)) {
+      ctx.reply("Please enter a valid phone number");
+      return;
+    }
 
     User.create({
       telegramID: ctx.message.from.id,
