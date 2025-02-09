@@ -7,7 +7,7 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 
 
 // Cloudflare Webhook
-addEventListener('fetch', event => {
+document.addEventListener('fetch', event => {
   event.respondWith(handleRequest(event.request));
 });
 
@@ -19,7 +19,7 @@ async function handleRequest(request) {
       await bot.handleUpdate(updates);
       return new Response('OK', { status: 200 });
   }
-  
+
   await bot.setWebhook(`https://${url.hostname}/webhook`);
   return new Response('Webhook set', { status: 200 });
 }
