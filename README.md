@@ -6,19 +6,19 @@ This is a Telegram bot built using Telegraf and Sequelize. The bot supports user
 - User registration with full name, email, and phone number
 - Admin panel with commands to list, promote, and remove users
 - Pagination support for user listings
-- Database integration using MySQL and Sequelize
+- Database integration using Postgres and Sequelize
 
 ## Technologies Used
 - **Node.js**
 - **Telegraf** (Telegram bot framework)
-- **Sequelize** (ORM for MySQL)
+- **Sequelize** (ORM for Postgres)
 - **dotenv** (For environment variable management)
-- **MySQL** (Database)
+- **Postgres** (Database)
 
 ## Setup Instructions
 ### Prerequisites
 - Install [Node.js](https://nodejs.org/)
-- Set up a MySQL database
+- Set up a Postgres database
 - Create a Telegram bot using [BotFather](https://t.me/botfather) and obtain the bot token
 
 ### Installation
