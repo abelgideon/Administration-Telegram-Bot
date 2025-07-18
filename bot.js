@@ -2,24 +2,20 @@ const { Telegraf, Markup, session, Scenes } = require("telegraf");
 require("dotenv").config();
 const { Sequelize, DataTypes } = require("sequelize");
 
-
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
-
-
 // SQL Connection
-const sequelize = new Sequelize(
-  `${process.env.DB_NAME}`,
-  `${process.env.DB_USER}`,
-  `${process.env.DB_PASSWORD}`,
-  {
-    host: `${process.env.DB_HOST}`,
-    dialect: "postgres", // 🔁 Changed here
-    port: process.env.DB_PORT || 5432, // ✅ Optional: default Postgres port
-    logging: false // optional for cleaner logs
-  }
-);
-
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+  dialect: "postgres",
+  protocol: "postgres",
+  logging: false,
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
+    },
+  },
+});
 
 sequelize
   .authenticate()
@@ -29,7 +25,6 @@ sequelize
   .catch((error) => {
     console.error("Unable to connect to the database: ", error);
   });
-
 
 // User Model
 const User = sequelize.define("users", {
@@ -51,7 +46,6 @@ const User = sequelize.define("users", {
   },
 });
 
-
 // Registration Process
 const registerSteps = new Scenes.WizardScene(
   "registerSteps",
@@ -64,7 +58,7 @@ const registerSteps = new Scenes.WizardScene(
     ctx.scene.state.name = ctx.message.text;
 
     if (!/^[a-z ]+$/i.test(ctx.scene.state.name)) {
-      ctx.reply("Please enter a valid full name")
+      ctx.reply("Please enter a valid full name");
       return;
     }
 
@@ -74,7 +68,9 @@ const registerSteps = new Scenes.WizardScene(
   (ctx) => {
     ctx.scene.state.email = ctx.message.text;
 
-    if (!/^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/.test(ctx.scene.state.email)) {
+    if (
+      !/^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/.test(ctx.scene.state.email)
+    ) {
       ctx.reply("Please enter a valid email address");
       return;
     }
@@ -109,7 +105,6 @@ const registerSteps = new Scenes.WizardScene(
 const stage = new Scenes.Stage([registerSteps]);
 bot.use(session());
 bot.use(stage.middleware());
-
 
 // Helper Functions
 function getUsers() {
@@ -296,7 +291,6 @@ bot.command("remove", async (ctx) => {
     ctx.reply("You cannot access that command.");
   }
 });
-
 
 // Bot Actions
 bot.action(/promote_(\d+)/, async (ctx) => {
